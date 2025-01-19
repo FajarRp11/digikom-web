@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PraktikumResource\Pages;
-use App\Filament\Resources\PraktikumResource\RelationManagers;
-use App\Models\Praktikum;
+use App\Filament\Resources\KontenResource\Pages;
+use App\Filament\Resources\KontenResource\RelationManagers;
+use App\Models\Konten;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,27 +13,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PraktikumResource extends Resource
+class KontenResource extends Resource
 {
-    protected static ?string $model = Praktikum::class;
+    protected static ?string $model = Konten::class;
 
-    protected static ?string $navigationGroup = 'Praktikum';
+    protected static ?string $navigationIcon = 'heroicon-o-play-circle';
 
-    protected static ?string $navigationIcon = 'heroicon-o-bookmark';
+    protected static ?string $navigationGroup = 'Konten';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Konten';
 
-    public static function getNavigationLabel(): string
-    {
-        return 'Praktikum';
-    }
-
+    protected static ?int $navigationSort = 6;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('title')
+                    ->required(),
+                Forms\Components\TextInput::make('deskripsi'),
+                Forms\Components\TextInput::make('video_id'),
             ]);
     }
 
@@ -41,7 +40,9 @@ class PraktikumResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('video_id'),
             ])
             ->filters([
                 //
@@ -68,9 +69,9 @@ class PraktikumResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPraktikums::route('/'),
-            'create' => Pages\CreatePraktikum::route('/create'),
-            'edit' => Pages\EditPraktikum::route('/{record}/edit'),
+            'index' => Pages\ListKontens::route('/'),
+            'create' => Pages\CreateKonten::route('/create'),
+            'edit' => Pages\EditKonten::route('/{record}/edit'),
         ];
     }
 }

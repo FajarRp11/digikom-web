@@ -9,6 +9,8 @@ export default {
         "./resources/views/**/*.blade.php",
     ],
 
+    safelist: ["bg-[url(/images/bg.png)]"],
+
     theme: {
         extend: {
             fontFamily: {
@@ -20,16 +22,17 @@ export default {
                 light: "#FFFDCC",
                 "light-2": "#FAF9F9",
                 green: "#617A40",
+                "light-green": "#D7EEB9",
+                "dark-green": "#7B9952",
                 dark: "#3A3738",
                 red: "#F14E3A",
-            },
-            backgroundImage: {
-                "hero-pattern":
-                    "url('" + process.env.MIX_ASSET_URL + "/images/Item5.jpg')",
             },
             minWidth: {
                 md: "768px",
                 xl: "1600px",
+            },
+            minHeight: {
+                150: "600px",
             },
         },
     },

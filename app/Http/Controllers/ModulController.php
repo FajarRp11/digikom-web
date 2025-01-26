@@ -9,28 +9,35 @@ use Illuminate\Support\Facades\Storage;
 
 class ModulController extends Controller
 {
-
-    public function getPraktikums()
+    public function getModulsByPraktikum($slug)
     {
-        $praktikum = Praktikum::get();
+            $praktikum = Praktikum::where('slug', $slug)->firstOrFail();
+            $moduls = Modul::where('id_praktikums', $praktikum->id)->get();
 
-        return response()->json($praktikum);
+            return view('pages.praktikum.modul', compact('moduls', 'praktikum'));
+            // return response()->json($moduls);           
     }
-    public function getModuls()
-    {
-        $moduls = Modul::with('praktikum')->get();
+    
+    // public function downloadModul($id)
+    // {
+    //     $modul = Modul::findOrFail($id);
+    //     dd(Storage::exists($modul->file_path), $modul->file_path);
 
-        // return view('moduls.index', compact('moduls'));
+    //     if ($modul && Storage::exists($modul->file_path)) {
+    //         return Storage::download($modul->file_path, $modul->title . '.pdf');
+    //     }
 
-        return response()->json($moduls);
-    }
+    //     return redirect()->back()->with('error', 'File tidak ditemukan');
+    // }
 
     public function downloadModul($id)
     {
         $modul = Modul::findOrFail($id);
 
-        if ($modul && Storage::exists($modul->file_path)) {
-            return Storage::download($modul->file_path, $modul->title . '.pdf');
+        $fullPath = public_path('storage/' . $modul->file_path);
+
+        if (file_exists($fullPath)) {
+            return response()->download($fullPath, $modul->title . '.pdf');
         }
 
         return redirect()->back()->with('error', 'File tidak ditemukan');
